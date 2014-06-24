@@ -1,7 +1,6 @@
 package be.ordina.utdemo.factoids.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Fact class: Encapsulate a fact.
@@ -9,7 +8,6 @@ import lombok.EqualsAndHashCode;
  * @author ppoissinger
  * 
  */
-@EqualsAndHashCode
 @Data
 public class Fact {
     /**
