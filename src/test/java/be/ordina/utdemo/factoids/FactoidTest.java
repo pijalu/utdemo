@@ -4,9 +4,13 @@ import lombok.SneakyThrows;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.unitils.UnitilsJUnit4;
+import org.unitils.inject.annotation.InjectIntoStaticByType;
+import org.unitils.inject.annotation.TestedObject;
+import org.unitils.mock.Mock;
 
+import be.ordina.utdemo.factoids.model.Fact;
 import be.ordina.utdemo.factoids.provider.FactProvider;
-import be.ordina.utdemo.factoids.provider.FileFactProvider;
 
 /**
  * Test main fact
@@ -14,19 +18,15 @@ import be.ordina.utdemo.factoids.provider.FileFactProvider;
  * @author ppoissinger
  * 
  */
-public class FactoidTest {
-    /** Expected content in testfacts.txt UT file
-     */
-    final String expectedFacts[] = {
-            "fact0",
-            "fact1",
-            "fact2"
-    };
-
+public class FactoidTest extends UnitilsJUnit4 {
     /**
      * Tested object.
      */
+    @TestedObject
     private Factoid f;
+
+    @InjectIntoStaticByType(target = Factoid.class)
+    private Mock<FactProvider> provider;
 
     /**
      * Inits.
@@ -34,11 +34,10 @@ public class FactoidTest {
     @Before
     @SneakyThrows
     public final void init() {
-        // Build a file provider, based on a known file
-        FactProvider provider = new FileFactProvider().loadStream(this
-                .getClass().getResourceAsStream("/testfacts.txt"));
-        f = new Factoid(provider);
-        // FIXME: Use mock to isolate the test
+        provider.returns(1).size();
+        provider.returns(new Fact("fact!")).getFact(0);
+
+        f = new Factoid(provider.getMock());
     }
 
     /**
@@ -46,18 +45,18 @@ public class FactoidTest {
      */
     @Test
     public final void testGetFacts() {
-        // Happy test: We only can ensure it does not exception on us...
         for (int i = 0; i < 3; ++i) {
             f.getFacts(i);
+            for (int j = 0; j < i; ++j) {
+                provider.assertInvokedInSequence().getFact(0);
+            }
         }
-        // FIXME: Use mock to ensure call is correct
     }
 
     @Test
     public void testMain() throws Exception {
-        // Happy test: We can really test this... or can we ?
         Factoid.main(null);
-        // FIXME: Use partial mock ?
+        provider.assertInvokedInSequence().getFact(0);
     }
 
 }
