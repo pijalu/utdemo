@@ -19,28 +19,29 @@ import be.ordina.utdemo.factoids.model.Fact;
  * 
  */
 public class FileFactProvider implements FactProvider {
-	/** Fact (memory) storage.
+
+	/**
+	 * Fact (memory) storage.
 	 */
 	private final List<Fact> facts = new ArrayList<>();
 
 	/**
 	 * Load a series of fact from a stream
 	 * 
-	 * @param stream stream to load - should be text!
+	 * @param stream
+	 *            stream to load - should be text!
 	 * @return FileFactProvider
 	 * @throws IOException
 	 *             Error when accessing file
 	 */
-	public final FileFactProvider loadStream(final InputStream stream)
-			throws IOException {
+	public final FileFactProvider loadStream(final InputStream stream) throws IOException {
 		if (stream == null) {
 			throw new IllegalArgumentException("NULL stream");
 		}
 
 		facts.clear();
 
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(stream));
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 		String str = br.readLine();
 		while (str != null) {
 			facts.add(new Fact(str));
@@ -57,6 +58,11 @@ public class FileFactProvider implements FactProvider {
 	@Override
 	public final Fact getFact(final int index) {
 		return facts.get(index);
+	}
+
+	@Override
+	public void addFact(Fact fact) {
+		facts.add(fact);
 	}
 
 }

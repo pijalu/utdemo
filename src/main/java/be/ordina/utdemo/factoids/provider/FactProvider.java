@@ -9,19 +9,27 @@ import be.ordina.utdemo.factoids.model.Fact;
  * 
  */
 public interface FactProvider {
-    /**
-     * Number of facts available
-     * 
-     * @return number of facts available
-     */
-    int size();
 
-    /**
-     * Retrieve a fact
-     * 
-     * @param index
-     *            index of the fact to retrieve
-     * @return matching fact
-     */
-    Fact getFact(final int index);
+	/**
+	 * Number of facts available
+	 * 
+	 * @return number of facts available
+	 */
+	int size();
+
+	/**
+	 * Retrieve a fact
+	 * 
+	 * @param index
+	 *            index of the fact to retrieve
+	 * @return matching fact
+	 */
+	Fact getFact(final int index);
+
+	/**
+	 * Adds a fact to the provider internal storage.
+	 * 
+	 * @param fact
+	 */
+	void addFact(Fact fact);
 }
