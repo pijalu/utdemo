@@ -52,7 +52,8 @@ public class RandomFactService implements FactService {
      */
     protected final void createPermutationIndexes() {
         // populate with valid indexes
-        for (int i = 0; i < provider.size(); ++i) {
+        int size = provider.size();
+        for (int i = 0; i < size; ++i) {
             indexes.add(i);
         }
     }

@@ -1,12 +1,16 @@
 package be.ordina.utdemo.factoids;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import lombok.SneakyThrows;
 
+import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
 
+import be.ordina.utdemo.factoids.model.Fact;
 import be.ordina.utdemo.factoids.provider.FactProvider;
-import be.ordina.utdemo.factoids.provider.FileFactProvider;
 
 /**
  * Test main fact
@@ -14,19 +18,15 @@ import be.ordina.utdemo.factoids.provider.FileFactProvider;
  * @author ppoissinger
  * 
  */
-public class FactoidTest {
-    /** Expected content in testfacts.txt UT file
-     */
-    final String expectedFacts[] = {
-            "fact0",
-            "fact1",
-            "fact2"
-    };
+public class FactoidTest extends EasyMockSupport {
 
     /**
      * Tested object.
      */
     private Factoid f;
+
+    /** Mock */
+    private FactProvider provider;
 
     /**
      * Inits.
@@ -34,11 +34,8 @@ public class FactoidTest {
     @Before
     @SneakyThrows
     public final void init() {
-        // Build a file provider, based on a known file
-        FactProvider provider = new FileFactProvider().loadStream(this
-                .getClass().getResourceAsStream("/testfacts.txt"));
+        provider = createMock(FactProvider.class);
         f = new Factoid(provider);
-        // FIXME: Use mock to isolate the test
     }
 
     /**
@@ -46,18 +43,29 @@ public class FactoidTest {
      */
     @Test
     public final void testGetFacts() {
-        // Happy test: We only can ensure it does not exception on us...
-        for (int i = 0; i < 3; ++i) {
-            f.getFacts(i);
+        final int TIMES=3;
+        expect(provider.size()).andReturn(1).times(TIMES * TIMES);
+        expect(provider.getFact(0)).andReturn(new Fact("fact!")).times(
+                TIMES * TIMES);
+        replay(provider);
+
+        for (int i = 0; i < TIMES; ++i) {
+            f.getFacts(TIMES);
         }
-        // FIXME: Use mock to ensure call is correct
+
+        verify(provider);
     }
 
     @Test
     public void testMain() throws Exception {
-        // Happy test: We can really test this... or can we ?
+        expect(provider.size()).andReturn(1);
+        expect(provider.getFact(0)).andReturn(new Fact("fact!"));
+        replay(provider);
+
+        Factoid.factProvider = provider;
         Factoid.main(null);
-        // FIXME: Use partial mock ?
+
+        verify(provider);
     }
 
 }
