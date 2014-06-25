@@ -23,7 +23,10 @@ public class DatabaseFactProvider implements FactProvider {
 	public DatabaseFactProvider() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UTDEMO");
 		entityManager = emf.createEntityManager();
+	}
 
+	public DatabaseFactProvider(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	@Override

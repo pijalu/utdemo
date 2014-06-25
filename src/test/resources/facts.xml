@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<dataset>
+	<FACTENTITY id="1" content="It's simple: if it jiggles, it's fat" />
+	<FACTENTITY id="2" content="Get your ass to Mars!" />
+	<FACTENTITY id="3" content="If it bleeds, we can kill it" />
+	<FACTENTITY id="4" content="I have a love interest in every one of my films: a gun" />
+	<FACTENTITY id="5" content="What killed the dinosaurs: the Ice Age!" />
+	<FACTENTITY id="6" content="I'm not into politics, I'm into survival" />
+	<FACTENTITY id="7" content="Who is your daddy, and what does he do?" />
+	<FACTENTITY id="8" content="Hasta la vista, baby" />
+	<FACTENTITY id="9" content="I'll be back" />
+	<FACTENTITY id="10" content="Blow off some steam, Bennet!" />
+</dataset>
