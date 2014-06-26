@@ -3,6 +3,7 @@
  */
 package be.ordina.utdemo.factoids;
 
+import java.io.IOException;
 import java.util.Random;
 
 import lombok.SneakyThrows;
@@ -46,6 +47,16 @@ public class Factoid {
         }
     }
 
+    static protected FactProvider provider;
+    static {
+        try {
+            provider = new FileFactProvider().loadStream(Factoid.class
+                    .getResourceAsStream("/chuck.txt"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load chuck file!");
+        }
+    }
+
     /**
      * Main !
      * 
@@ -55,8 +66,6 @@ public class Factoid {
     @SneakyThrows
     public static void main(final String[] args) {
         int defaultNumber = 1;
-        FactProvider provider = new FileFactProvider().loadStream(Factoid.class
-                .getResourceAsStream("/chuck.txt"));
         new Factoid(provider).getFacts(defaultNumber);
     }
 }
