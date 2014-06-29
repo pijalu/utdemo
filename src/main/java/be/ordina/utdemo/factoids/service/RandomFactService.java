@@ -19,7 +19,7 @@ public class RandomFactService implements FactService {
      * Permutation index
      * 
      */
-    private final List<Integer> indexes = new ArrayList<>();
+    private List<Integer> indexes;
 
     /**
      * Fact provider
@@ -81,4 +81,15 @@ public class RandomFactService implements FactService {
     public final Fact getAFact() {
         return provider.getFact(getAPermutationIndex());
     }
+
+	
+    public List<Integer> getIndexes() {    	
+		return indexes;
+	}
+
+	public void setIndexes(List<Integer> indexes) {
+		this.indexes = indexes;
+	}
+    
+    
 }

@@ -10,7 +10,12 @@ import lombok.Data;
  */
 @Data
 public class Fact {
-    /**
+	
+    public String getContent() {
+		return content;
+	}
+
+	/**
      * Actual Fact content
      */
     private final String content;
