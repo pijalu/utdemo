@@ -1,12 +1,17 @@
 package be.ordina.utdemo.factoids;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import lombok.SneakyThrows;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import be.ordina.utdemo.factoids.model.Fact;
 import be.ordina.utdemo.factoids.provider.FactProvider;
-import be.ordina.utdemo.factoids.provider.FileFactProvider;
 
 /**
  * Test main fact
@@ -15,18 +20,13 @@ import be.ordina.utdemo.factoids.provider.FileFactProvider;
  * 
  */
 public class FactoidTest {
-    /** Expected content in testfacts.txt UT file
-     */
-    final String expectedFacts[] = {
-            "fact0",
-            "fact1",
-            "fact2"
-    };
-
     /**
      * Tested object.
      */
     private Factoid f;
+
+    /** Mock */
+    FactProvider provider;
 
     /**
      * Inits.
@@ -35,10 +35,11 @@ public class FactoidTest {
     @SneakyThrows
     public final void init() {
         // Build a file provider, based on a known file
-        FactProvider provider = new FileFactProvider().loadStream(this
-                .getClass().getResourceAsStream("/testfacts.txt"));
+        provider = mock(FactProvider.class);
+        when(provider.size()).thenReturn(1);
+        when(provider.getFact(anyInt())).thenReturn(new Fact("Fact!"));
+        // Use the mock !
         f = new Factoid(provider);
-        // FIXME: Use mock to isolate the test
     }
 
     /**
@@ -46,18 +47,19 @@ public class FactoidTest {
      */
     @Test
     public final void testGetFacts() {
-        // Happy test: We only can ensure it does not exception on us...
         for (int i = 0; i < 3; ++i) {
             f.getFacts(i);
         }
-        // FIXME: Use mock to ensure call is correct
+        verify(provider, atLeast(3)).size();
+        verify(provider, atLeast(3)).getFact(0);
     }
 
     @Test
     public void testMain() throws Exception {
-        // Happy test: We can really test this... or can we ?
+        Factoid.provider=provider;
         Factoid.main(null);
-        // FIXME: Use partial mock ?
+        verify(provider, atLeast(1)).size();
+        verify(provider, atLeast(1)).getFact(0);
     }
 
 }
