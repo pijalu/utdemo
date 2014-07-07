@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package be.ordina.utdemo.factoids.service;
 
@@ -20,16 +20,16 @@ import be.ordina.utdemo.factoids.provider.FactProvider;
 
 /**
  * Test random fact
- * 
+ *
  * @author ppoissinger
- * 
+ *
  */
 @RunWith(JMockit.class)
 public class RandomFactServiceTest {
     final int SIZE = 10;
     /**
      * Tested object
-     * 
+     *
      */
     private RandomFactService service;
 
@@ -50,12 +50,14 @@ public class RandomFactServiceTest {
                 provider.size();
                 result = SIZE;
 
-                for (int i = 0; i < SIZE; ++i) {
-                    random.nextInt(i + 1);
-                    result = i;
+                for (int factIndex = 0; factIndex < SIZE; ++factIndex) {
+                    int leftToSelect = factIndex + 1;
+                    random.nextInt(leftToSelect);
+                    result = factIndex;
 
-                    provider.getFact(i);
-                    result = new Fact("Fact" + (i + 1));
+                    provider.getFact(factIndex);
+                    Fact fact = new Fact("Fact" + leftToSelect);
+                    result = fact;
                 }
             }
         };
@@ -69,9 +71,9 @@ public class RandomFactServiceTest {
      */
     @Test
     public final void testGetAFact() {
-        for (int i = SIZE; i != 0; i--) {
+        for (int runIndex = SIZE; runIndex != 0; runIndex--) {
             String actual = service.getAFact().getContent();
-            String expected = "Fact" + i;
+            String expected = "Fact" + runIndex;
             Assert.assertEquals(expected, actual);
         }
     }
