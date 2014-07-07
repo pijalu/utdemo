@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package be.ordina.utdemo.factoids.service;
 
@@ -21,16 +21,16 @@ import be.ordina.utdemo.factoids.provider.FactProvider;
 
 /**
  * Test random fact
- * 
+ *
  * @author ppoissinger
- * 
+ *
  */
 public class RandomFactServiceTest extends EasyMockSupport {
     private final int SIZE = 10;
 
     /**
      * Tested object
-     * 
+     *
      */
     private RandomFactService service;
 
@@ -57,18 +57,21 @@ public class RandomFactServiceTest extends EasyMockSupport {
         // Fact: easyMock showed that size() was called SIZE time in
         // original code => updated code
         expect(provider.size()).andReturn(SIZE);
-        for (int i = 0; i < SIZE; ++i) {
-            expect(random.nextInt(i+1)).andReturn(i);
-            expect(provider.getFact(i)).andReturn(
-                    new Fact(String.format("Fact%d", i)));
 
+        // Our random should return last to first facts
+        for (int factIndex = 0; factIndex < SIZE; ++factIndex) {
+            int leftToSelect = factIndex + 1;
+            String factText = String.format("Fact%d", factIndex);
+
+            expect(random.nextInt(leftToSelect)).andReturn(factIndex);
+            expect(provider.getFact(factIndex)).andReturn(new Fact(factText));
         }
         replay(random);
         replay(provider);
 
-        for (int i = 0; i < SIZE; ++i) {
+        for (int factIndex = 0; factIndex < SIZE; ++factIndex) {
             String aFact = service.getAFact().getContent();
-            String eFact = String.format("Fact%d", SIZE - i - 1);
+            String eFact = String.format("Fact%d", SIZE - factIndex - 1);
 
             Assert.assertEquals(eFact, aFact);
         }
