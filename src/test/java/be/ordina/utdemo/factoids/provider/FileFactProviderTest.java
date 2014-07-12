@@ -1,15 +1,14 @@
 package be.ordina.utdemo.factoids.provider;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import junit.framework.Assert;
 import lombok.SneakyThrows;
-
 import org.junit.Test;
 import org.unitils.UnitilsJUnit4;
 import org.unitils.mock.Mock;
 import org.unitils.mock.core.MockObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author ppoissinger
@@ -40,7 +39,7 @@ public class FileFactProviderTest extends UnitilsJUnit4 {
     @SneakyThrows
     public final void testLoadStreamIllegalArgument() {
         FileFactProvider ffp = new FileFactProvider();
-        ffp.loadStream(null);
+        ffp.loadStream((InputStream)null);
     }
 
     /**

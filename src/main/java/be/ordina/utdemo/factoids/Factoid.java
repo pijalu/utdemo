@@ -3,14 +3,14 @@
  */
 package be.ordina.utdemo.factoids;
 
-import java.io.IOException;
-import java.util.Random;
-
-import lombok.SneakyThrows;
+import be.ordina.utdemo.factoids.model.Fact;
 import be.ordina.utdemo.factoids.provider.FactProvider;
-import be.ordina.utdemo.factoids.provider.FileFactProvider;
+import be.ordina.utdemo.factoids.provider.FileFactProviderSupplier;
 import be.ordina.utdemo.factoids.service.FactService;
 import be.ordina.utdemo.factoids.service.RandomFactService;
+import lombok.SneakyThrows;
+
+import java.util.Random;
 
 /**
  * Simple fact service client.
@@ -19,21 +19,19 @@ import be.ordina.utdemo.factoids.service.RandomFactService;
  * 
  */
 public class Factoid {
+    private static String defaultFileLocation = "/chuck.txt";
+    /**
+     * Default provider
+     *
+     */
+    private static FactProvider defaultProvider = new FileFactProviderSupplier(defaultFileLocation, Factoid.class).get();
+
+
     /**
      * Fact service.
      * 
      */
-    private final FactService service;
-
-    /**
-     * Build our factoids.
-     * 
-     * @param provider
-     *            provider to use
-     */
-    public Factoid(final FactProvider provider) {
-        service = new RandomFactService(provider, new Random());
-    }
+    private static FactService service = new RandomFactService(defaultProvider, new Random());
 
     /**
      * Retrieve a number of fact
@@ -41,23 +39,13 @@ public class Factoid {
      * @param nbFacts
      *            the number of facts to retrieve
      */
-    protected final void getFacts(final int nbFacts) {
+    private static void getFacts(final int nbFacts) {
         for (int i = 0; i < nbFacts; ++i) {
-            System.out.println(service.getAFact().getContent());
-        }
-    }
-
-    /**
-     * Default provider
-     * 
-     */
-    private static FactProvider defaultProvider;
-    static {
-        try {
-            defaultProvider = new FileFactProvider().loadStream(Factoid.class
-                    .getResourceAsStream("/chuck.txt"));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load facts !", e);
+            Fact aFact = service.getAFact();
+            if(aFact != null) {
+                System.out.println(aFact.getContent());
+            }
+            System.out.println("No facts found!!");
         }
     }
 
@@ -70,6 +58,6 @@ public class Factoid {
     @SneakyThrows
     public static void main(final String[] args) {
         int defaultNumber = 1;
-        new Factoid(defaultProvider).getFacts(defaultNumber);
+        getFacts(defaultNumber);
     }
 }

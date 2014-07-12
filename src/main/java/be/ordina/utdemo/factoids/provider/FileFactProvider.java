@@ -3,6 +3,8 @@
  */
 package be.ordina.utdemo.factoids.provider;
 
+import be.ordina.utdemo.factoids.model.Fact;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.ordina.utdemo.factoids.model.Fact;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Provide facts, loaded from a file
@@ -56,7 +58,26 @@ public class FileFactProvider implements FactProvider {
 
 	@Override
 	public final Fact getFact(final int index) {
-		return facts.get(index);
-	}
+        if (facts.isEmpty()) {
+            return null;
+        }
+        return facts.get(index);
+    }
 
+
+    public FileFactProvider loadStream(BufferedReader bufferedReader) throws IOException {
+        checkArgument(bufferedReader != null, "BufferedReader must not be null when calling loadStream.");
+        facts.clear();
+        try (BufferedReader closeableBufferedReader = bufferedReader) {
+            if (closeableBufferedReader == null) {
+                return this;
+            }
+            String fact = closeableBufferedReader.readLine();
+            while (fact != null) {
+                facts.add(new Fact(fact));
+                fact = closeableBufferedReader.readLine();
+            }
+        }
+        return this;
+    }
 }

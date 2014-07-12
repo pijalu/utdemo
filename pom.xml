@@ -15,6 +15,7 @@
 		<easymock.version>3.2</easymock.version>
 		<mockito.version>1.9.5</mockito.version>
 		<unitils.version>3.3</unitils.version>
+		<fest.version>1.4</fest.version>
 	</properties>
 
 	<dependencies>
@@ -48,6 +49,12 @@
 			<version>${easymock.version}</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -75,7 +82,13 @@
 			<version>${unitils.version}</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert</artifactId>
+            <version>${fest.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 
 	<build>

@@ -1,11 +1,11 @@
 package be.ordina.utdemo.factoids.service;
 
+import be.ordina.utdemo.factoids.model.Fact;
+import be.ordina.utdemo.factoids.provider.FactProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import be.ordina.utdemo.factoids.model.Fact;
-import be.ordina.utdemo.factoids.provider.FactProvider;
 
 /**
  * Return pseudo-random facts from a fact provider (All facts will be returned)
@@ -50,9 +50,9 @@ public class RandomFactService implements FactService {
      * Create permutation indexes
      * 
      */
-    protected final void createPermutationIndexes() {
+    protected final void createPermutationIndexes(int size) {
         // populate with valid indexes
-        for (int i = 0; i < provider.size(); ++i) {
+        for (int i = 0; i < size; ++i) {
             indexes.add(i);
         }
     }
@@ -62,12 +62,12 @@ public class RandomFactService implements FactService {
      * 
      * @return a random index
      */
-    protected final int getAPermutationIndex() {
+    protected final int getAPermutationIndex(int size) {
         // Create permutation index
         if (indexes.isEmpty()) {
-            createPermutationIndexes();
+            createPermutationIndexes(size);
         }
-        int permuationIndex = random.nextInt(indexes.size());
+        int permuationIndex = random.nextInt(size);
         // select
         int indexToReturn = indexes.get(permuationIndex);
         // Remove from our permutation to ensure we go thru the complete set
@@ -79,6 +79,10 @@ public class RandomFactService implements FactService {
 
     @Override
     public final Fact getAFact() {
-        return provider.getFact(getAPermutationIndex());
+        int size = provider.size();
+        if (size == 0) {
+            return null;
+        }
+        return provider.getFact(getAPermutationIndex(size));
     }
 }
