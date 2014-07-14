@@ -1,5 +1,6 @@
 package be.ordina.utdemo.factoids;
 
+import be.ordina.utdemo.factoids.configuration.FactoidConfiguration;
 import be.ordina.utdemo.factoids.model.Fact;
 import be.ordina.utdemo.factoids.service.FactService;
 import lombok.SneakyThrows;
@@ -12,9 +13,8 @@ import org.unitils.mock.Mock;
 
 /**
  * Test main fact
- * 
+ *
  * @author ppoissinger
- * 
  */
 @SuppressWarnings("unused")
 public class FactoidTest extends UnitilsJUnit4 {
@@ -25,20 +25,26 @@ public class FactoidTest extends UnitilsJUnit4 {
     private Factoid factoid;
 
     @InjectIntoStaticByType(target = Factoid.class)
+    private Mock<FactoidConfiguration> factoidConfigurationMock;
+
     private Mock<FactService> serviceMock;
+
 
     /**
      * Inits.
      */
     @Before
     @SneakyThrows
+
     public final void init() {
+        factoidConfigurationMock.returns(serviceMock).getService();
         serviceMock.returns(new Fact("fact!")).getAFact();
     }
 
     @Test
     public void testMain() throws Exception {
         Factoid.main(null);
+        factoidConfigurationMock.assertInvokedInSequence().getService();
         serviceMock.assertInvokedInSequence().getAFact();
     }
 

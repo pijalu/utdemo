@@ -3,14 +3,11 @@
  */
 package be.ordina.utdemo.factoids;
 
+import be.ordina.utdemo.factoids.configuration.FactoidConfiguration;
+import be.ordina.utdemo.factoids.configuration.FileFactProviderWithRandomFactsConfiguration;
 import be.ordina.utdemo.factoids.model.Fact;
-import be.ordina.utdemo.factoids.provider.FactProvider;
-import be.ordina.utdemo.factoids.provider.FileFactProviderSupplier;
 import be.ordina.utdemo.factoids.service.FactService;
-import be.ordina.utdemo.factoids.service.RandomFactService;
 import lombok.SneakyThrows;
-
-import java.util.Random;
 
 /**
  * Simple fact service client.
@@ -19,19 +16,8 @@ import java.util.Random;
  * 
  */
 public class Factoid {
-    private static String defaultFileLocation = "/chuck.txt";
-    /**
-     * Default provider
-     *
-     */
-    private static FactProvider defaultProvider = new FileFactProviderSupplier(defaultFileLocation, Factoid.class).get();
 
-
-    /**
-     * Fact service.
-     * 
-     */
-    private static FactService service = new RandomFactService(defaultProvider, new Random());
+    private static FactoidConfiguration factoidConfiguration = new FileFactProviderWithRandomFactsConfiguration();
 
     /**
      * Retrieve a number of fact
@@ -40,10 +26,12 @@ public class Factoid {
      *            the number of facts to retrieve
      */
     private static void getFacts(final int nbFacts) {
-        for (int i = 0; i < nbFacts; ++i) {
+        FactService service = factoidConfiguration.getService();
+        for (int i = 0; i < nbFacts; i++) {
             Fact aFact = service.getAFact();
-            if(aFact != null) {
+            if (aFact != null) {
                 System.out.println(aFact.getContent());
+                continue;
             }
             System.out.println("No facts found!!");
         }
@@ -58,6 +46,9 @@ public class Factoid {
     @SneakyThrows
     public static void main(final String[] args) {
         int defaultNumber = 1;
+        if (args != null && args.length == 1) {
+            defaultNumber = Integer.parseInt(args[0]);
+        }
         getFacts(defaultNumber);
     }
 }

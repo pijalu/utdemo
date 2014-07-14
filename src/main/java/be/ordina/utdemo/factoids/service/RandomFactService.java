@@ -67,12 +67,12 @@ public class RandomFactService implements FactService {
         if (indexes.isEmpty()) {
             createPermutationIndexes(size);
         }
-        int permuationIndex = random.nextInt(size);
+        int permutationIndex = random.nextInt(indexes.size());
         // select
-        int indexToReturn = indexes.get(permuationIndex);
+        int indexToReturn = indexes.get(permutationIndex);
         // Remove from our permutation to ensure we go thru the complete set
         // without dups
-        indexes.remove(permuationIndex);
+        indexes.remove(permutationIndex);
         // return the index
         return indexToReturn;
     }

@@ -1,10 +1,11 @@
 package be.ordina.utdemo.factoids.provider;
 
+import com.google.common.base.Supplier;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 public class FileFactProviderSupplier implements Supplier<FileFactProvider> {
 

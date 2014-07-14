@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 /**
  * Provide facts, loaded from a file
  * 
@@ -27,12 +25,14 @@ public class FileFactProvider implements FactProvider {
 
 	/**
 	 * Load a series of fact from a stream
-	 * 
+	 *
 	 * @param stream stream to load - should be text!
 	 * @return FileFactProvider
 	 * @throws IOException
 	 *             Error when accessing file
+     * @deprecated use the loadStream(BufferedReader bufferedReader) instead
 	 */
+    //TODO remove this method and change test to test method of loadStream(BufferedReader bufferedReader)
 	public final FileFactProvider loadStream(final InputStream stream)
 			throws IOException {
 		if (stream == null) {
@@ -66,11 +66,10 @@ public class FileFactProvider implements FactProvider {
 
 
     public FileFactProvider loadStream(BufferedReader bufferedReader) throws IOException {
-        checkArgument(bufferedReader != null, "BufferedReader must not be null when calling loadStream.");
         facts.clear();
         try (BufferedReader closeableBufferedReader = bufferedReader) {
             if (closeableBufferedReader == null) {
-                return this;
+                throw new IllegalArgumentException("BufferedReader must not be null when calling loadStream.");
             }
             String fact = closeableBufferedReader.readLine();
             while (fact != null) {

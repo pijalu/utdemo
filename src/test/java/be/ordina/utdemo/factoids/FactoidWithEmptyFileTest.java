@@ -33,7 +33,6 @@ public class FactoidWithEmptyFileTest {
         Factoid.main(null);
     }
 
-
     @After
     public void replaceEmptyFileWithSourceFile() throws IOException {
         File emptyFile = new File(Factoid.class.getResource("/chuck.txt").getFile());
