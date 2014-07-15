@@ -1,30 +1,26 @@
 package be.ordina.utdemo.factoids.provider;
 
-import com.google.common.base.Supplier;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
+import com.google.common.base.Supplier;
 
 public class FileFactProviderSupplier implements Supplier<FileFactProvider> {
 
     private final String fileLocation;
     private final Class<?> lookupStartPoint;
-    private FileFactProvider fileFactProvider = new FileFactProvider();
+    private final FileFactProvider fileFactProvider = new FileFactProvider();
 
-    public FileFactProviderSupplier(String fileLocation, Class<?> lookupStartPoint) {
+    public FileFactProviderSupplier(final String fileLocation, final Class<?> lookupStartPoint) {
         this.fileLocation = fileLocation;
         this.lookupStartPoint = lookupStartPoint;
     }
 
     @Override
     public FileFactProvider get() {
-            try {
-                Path path = new File(lookupStartPoint.getResource(fileLocation).getFile()).toPath();
-                return fileFactProvider.loadStream(Files.newBufferedReader(path));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to load facts !", e);
-            }
+        try {
+            return fileFactProvider.loadStream(lookupStartPoint.getResourceAsStream(fileLocation));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load facts !", e);
+        }
     }
 }
