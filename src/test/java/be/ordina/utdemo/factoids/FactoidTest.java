@@ -1,6 +1,6 @@
 package be.ordina.utdemo.factoids;
 
-import lombok.SneakyThrows;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +10,9 @@ import be.ordina.utdemo.factoids.provider.FileFactProvider;
 
 /**
  * Test main fact
- * 
+ *
  * @author ppoissinger
- * 
+ *
  */
 public class FactoidTest {
     /** Expected content in testfacts.txt UT file
@@ -30,10 +30,10 @@ public class FactoidTest {
 
     /**
      * Inits.
+     * @throws IOException
      */
     @Before
-    @SneakyThrows
-    public final void init() {
+    public final void init() throws IOException {
         // Build a file provider, based on a known file
         FactProvider provider = new FileFactProvider().loadStream(this
                 .getClass().getResourceAsStream("/testfacts.txt"));
